@@ -97,13 +97,13 @@ class _AppbarFooterState extends State<AppbarFooter> {
                                                       .openDrawer())),
                               Image.asset(
                                 'media/barberlogo.png',
-                                scale: 2.5,
+                                scale: 1.5,
                               )
                             ],
                           )
                         : Image.asset(
                             'media/barberlogo.png',
-                            scale: 2.5,
+                            scale: 1.5,
                           ),
                   )),
               actions: <Widget>[
@@ -563,6 +563,7 @@ class AppbarMenu extends StatelessWidget {
                                             body: UserPage(
                                                 uid: auth.currentUser?.uid),
                                             automaticallyImplyLeading: true,
+                                            removeFooter: true,
                                           ))))));
                         },
                         value: 0,
@@ -638,7 +639,7 @@ class AppbarMenu extends StatelessWidget {
                                                         color: CColors.gold))),
                                             TextButton(
                                                 onPressed: () async {
-                                                  logout(context);
+                                                  logout(context, true);
                                                 },
                                                 child: Text("Sì",
                                                     style: TextStyle(
@@ -668,6 +669,7 @@ class AppbarMenu extends StatelessWidget {
                                             body: UserPage(
                                                 uid: auth.currentUser?.uid),
                                             automaticallyImplyLeading: true,
+                                            removeFooter: true,
                                           ))))));
                         },
                         value: 0,
@@ -701,7 +703,7 @@ class AppbarMenu extends StatelessWidget {
                                                         color: CColors.gold))),
                                             TextButton(
                                                 onPressed: () async {
-                                                  logout(context);
+                                                  logout(context, true);
                                                 },
                                                 child: Text("Sì",
                                                     style: TextStyle(
@@ -774,13 +776,19 @@ class SubTitleText extends StatelessWidget {
   }
 }
 
-logout(context) {
+logout(context, bool log) {
   auth.signOut().then((value) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => LoginPage(
+            builder: ((context) => log ? LoginPage(
                   firstPage: true,
-                ))));
+                ) : 
+                RegisterPage(
+                  firstPage: true,
+                )
+                )
+                
+                ));
   });
 }

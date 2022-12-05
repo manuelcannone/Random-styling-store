@@ -16,17 +16,15 @@ import 'package:firebase_core/firebase_core.dart';
 
 /*
 
+     final operator = {
+      "name" : "Gianmarco"
+    };
+
       final addDatesToOperators = FirebaseFirestore.instance.collection("dates");
     
     addDatesToOperators.add({
       "dates" : [
-        "9:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00"
+      
       ],
       "day": 1,
       "week" : "lunedi",
@@ -35,13 +33,25 @@ import 'package:firebase_core/firebase_core.dart';
 
         addDatesToOperators.add({
       "dates" : [
-        "9:00",
+          "9:00",
+        "9:30",
         "10:00",
+        "10:30",
         "11:00",
+        "11:30",
         "12:00",
+        "12:30",
         "13:00",
-        "14:00",
-        "15:00"
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
       ],
       "day": 2,
       "week" : "Martedi",
@@ -50,13 +60,25 @@ import 'package:firebase_core/firebase_core.dart';
       
         addDatesToOperators.add({
       "dates" : [
-        "9:00",
+         "9:00",
+        "9:30",
         "10:00",
+        "10:30",
         "11:00",
+        "11:30",
         "12:00",
+        "12:30",
         "13:00",
-        "14:00",
-        "15:00"
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
       ],
       "day": 3,
       "week" : "Mercoledi",
@@ -65,12 +87,24 @@ import 'package:firebase_core/firebase_core.dart';
         addDatesToOperators.add({
       "dates" : [
         "9:00",
+        "9:30",
         "10:00",
+        "10:30",
         "11:00",
+        "11:30",
         "12:00",
+        "12:30",
         "13:00",
-        "14:00",
-        "15:00"
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
       ],
       "day": 4,
       "week" : "Giovedi",
@@ -79,12 +113,24 @@ import 'package:firebase_core/firebase_core.dart';
         addDatesToOperators.add({
       "dates" : [
         "9:00",
+        "9:30",
         "10:00",
+        "10:30",
         "11:00",
+        "11:30",
         "12:00",
+        "12:30",
         "13:00",
-        "14:00",
-        "15:00"
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
       ],
       "day": 5,
       "week" : "Venerdi",
@@ -93,13 +139,25 @@ import 'package:firebase_core/firebase_core.dart';
 
         addDatesToOperators.add({
       "dates" : [
-        "9:00",
+         "9:00",
+        "9:30",
         "10:00",
+        "10:30",
         "11:00",
+        "11:30",
         "12:00",
+        "12:30",
         "13:00",
-        "14:00",
-        "15:00"
+        "14:30",
+        "15:00",
+        "15:30",
+        "16:00",
+        "16:30",
+        "17:00",
+        "17:30",
+        "18:00",
+        "18:30",
+        "19:00",
       ],
       "day": 6,
       "week" : "Sabato",
@@ -109,18 +167,13 @@ import 'package:firebase_core/firebase_core.dart';
        
         addDatesToOperators.add({
       "dates" : [
-        "9:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00"
+       
       ],
       "day": 7,
       "week" : "Domenica",
       "operators": operator["name"],
     });
+
 
 */
 
@@ -141,6 +194,8 @@ class _GestionServiceState extends State<GestionService> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
+   
   }
 
   @override
@@ -359,8 +414,6 @@ class _AddTimeState extends State<AddTime> {
           });
 
       if (result != null) {
-        var time = result.hour.toString() + ":" + result.minute.toString();
-        print(time);
 
         setState(() {
           _selectedTime = result.format(context);
@@ -368,7 +421,7 @@ class _AddTimeState extends State<AddTime> {
           print("search");
           FirebaseFirestore.instance.collection("dates/").doc(widget.id).update(
             {
-              'dates': FieldValue.arrayUnion([time])
+              'dates': FieldValue.arrayUnion([result.format(context)])
             },
           );
         });

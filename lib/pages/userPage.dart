@@ -7,9 +7,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:open_mail_app/open_mail_app.dart';
 import 'package:randomstylingstore/pages/admin/usersAdmin.dart';
 
+
+import 'admin/bookingAdminOpen.dart';
+import 'auth/register.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
+
 class UserPage extends StatelessWidget {
-  UserPage({super.key, required this.uid, this.fromUsersAdmin = false});
-  bool fromUsersAdmin;
+  UserPage({super.key, required this.uid});
   dynamic uid;
   bool verifyEmailSent = false;
 
@@ -43,11 +48,13 @@ class UserPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object>(
-        stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
+        stream:
+            FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
         builder: (context, AsyncSnapshot snapshot) {
           return snapshot.hasData
               ? Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -78,144 +85,218 @@ class UserPage extends StatelessWidget {
                           )
                         ],
                       ),
-                      Label(type: "Nominativo", text: snapshot.data["firstAndLastNames"]),
+                      Label(
+                          type: "Nominativo",
+                          text: snapshot.data["firstAndLastNames"]),
                       Label(type: "Email", text: snapshot.data["email"]),
-                      Label(type: "Numero di Telefono", text: snapshot.data["mobile"]),
+                      Label(
+                          type: "Numero di Telefono",
+                          text: snapshot.data["mobile"]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              resetPassword(snapshot.data["email"]);
+                              if (verifyEmailSent) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.transparent,
+                                      content: CContainer(
+                                        radius: 10,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 15),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .35,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .9,
+                                        color: CColors.black,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                      text:
+                                                          "Abbiamo inviato una email a ",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18),
+                                                      children: [
+                                                        TextSpan(
+                                                            text:
+                                                                "${snapshot.data["email"]}",
+                                                            style: TextStyle(
+                                                                color: CColors
+                                                                    .gold,
+                                                                fontSize: 18)),
+                                                        TextSpan(
+                                                            text: "!",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 18)),
+                                                      ]),
+                                                ),
+                                                Divider(
+                                                  thickness: 1,
+                                                  color: CColors.gold,
+                                                ),
+                                                Text(
+                                                    "Assicurati di controllare anche la casella dello Spam!",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12))
+                                              ],
+                                            ),
+                                            CommonSlider(
+                                                function: () async {
+                                                  var result = await OpenMailApp
+                                                      .openMailApp(
+                                                          nativePickerTitle:
+                                                              'Seleziona app');
+                                                  if (!result.didOpen &&
+                                                      !result.canOpen) {
+                                                    showNoMailAppsDialog(
+                                                        context);
+                                                    // iOS: if multiple mail apps found, show dialog to select.
+                                                    // There is no native intent/default app system in iOS so
+                                                    // you have to do it yourself.
+                                                  } else if (!result.didOpen &&
+                                                      result.canOpen) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (_) {
+                                                        return MailAppPickerDialog(
+                                                          mailApps:
+                                                              result.options,
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                },
+                                                text:
+                                                    "Scorri per aprire l'app delle tue email"),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Cambia Password",
+                                style: TextStyle(fontSize: 24),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          fromUsersAdmin
-                              ? Btn(
-                                  text: snapshot.data["banned"] ? "Sblocca" : "Blocca",
-                                  onTap: () async {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          //cant extract this widget
-                                          backgroundColor: CColors.black,
-                                          content: RichText(
-                                            text: TextSpan(
-                                                style: TextStyle(color: Colors.white),
-                                                text: snapshot.data["banned"]
-                                                    ? "Sei sicuro di voler sbloccare l'accesso a "
-                                                    : "Sei sicuro di voler bloccare l'accesso a ",
-                                                children: [
-                                                  TextSpan(
-                                                      text: snapshot.data["firstAndLastNames"],
-                                                      style: TextStyle(color: CColors.gold)),
-                                                  TextSpan(text: "?", style: TextStyle(color: Colors.white))
-                                                ]),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text("No", style: TextStyle(color: CColors.gold))),
-                                            TextButton(
-                                                onPressed: () async {
-                                                  Navigator.pop(context);
-                                                  await FirebaseFirestore.instance
-                                                      .collection("users")
-                                                      .doc(uid)
-                                                      .update({"banned": !snapshot.data["banned"]});
-                                                },
-                                                child: Text("Sì", style: TextStyle(color: CColors.gold))),
-                                          ],
-                                        );
-                                      },
-                                    );
-
-                                    //   await FirebaseFirestore.instance.collection("users").doc(snapshot.data.docs[index].id).update({
-                                    //   "banned" : !snapshot.data.docs[index]["banned"]
-                                    // });
-                                  },
-                                )
-                              : ElevatedButton(
-                                  onPressed: () {
-                                    resetPassword(snapshot.data["email"]);
-                                    if (verifyEmailSent) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            backgroundColor: Colors.transparent,
-                                            content: CContainer(
-                                              radius: 10,
-                                              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                                              height: MediaQuery.of(context).size.height * .35,
-                                              width: MediaQuery.of(context).size.width * .9,
-                                              color: CColors.black,
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    children: [
-                                                      RichText(
-                                                        text: TextSpan(
-                                                            text: "Abbiamo inviato una email a ",
-                                                            style: TextStyle(color: Colors.white, fontSize: 18),
-                                                            children: [
-                                                              TextSpan(
-                                                                  text: "${snapshot.data["email"]}",
-                                                                  style: TextStyle(color: CColors.gold, fontSize: 18)),
-                                                              TextSpan(
-                                                                  text: "!",
-                                                                  style: TextStyle(color: Colors.white, fontSize: 18)),
-                                                            ]),
-                                                      ),
-                                                      Divider(
-                                                        thickness: 1,
-                                                        color: CColors.gold,
-                                                      ),
-                                                      Text("Assicurati di controllare anche la casella dello Spam!",
-                                                          style: TextStyle(color: Colors.white, fontSize: 12))
-                                                    ],
-                                                  ),
-                                                  CommonSlider(
-                                                      function: () async {
-                                                        var result = await OpenMailApp.openMailApp(
-                                                            nativePickerTitle: 'Seleziona app');
-                                                        if (!result.didOpen && !result.canOpen) {
-                                                          showNoMailAppsDialog(context);
-                                                          // iOS: if multiple mail apps found, show dialog to select.
-                                                          // There is no native intent/default app system in iOS so
-                                                          // you have to do it yourself.
-                                                        } else if (!result.didOpen && result.canOpen) {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) {
-                                                              return MailAppPickerDialog(
-                                                                mailApps: result.options,
-                                                              );
-                                                            },
-                                                          );
-                                                        }
-                                                      },
-                                                      text: "Scorri per aprire l'app delle tue email"),
-                                                ],
-                                              ),
+                          ElevatedButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: ((context) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.transparent,
+                                      content: CContainer(
+                                        radius: 10,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 20, horizontal: 15),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                .35,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                .9,
+                                        color: CColors.black,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            RichText(
+                                                text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      "Il tuo account verrà eliminato",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 21),
+                                                ),
+                                                TextSpan(
+                                                  text: " permanentemente",
+                                                  style: TextStyle(
+                                                      color: CColors.gold,
+                                                      fontSize: 21),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      ". Sei sicuro di voler continuare?",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 21),
+                                                )
+                                              ],
+                                            )),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                DecisionButton(
+                                                  widthB: 80,
+                                                  heightB: 45,
+                                                    function:(){
+                                                      Navigator.pop(context);      
+                                                    },
+                                                    borderColor:
+                                                        Color(0xffC50707),
+                                                    backColor: Color.fromARGB(
+                                                        40, 255, 0, 0),
+                                                    text: "NO"),
+                                                DecisionButton(
+                                                  widthB: 80,
+                                                  heightB: 45,
+                                                  function:()  {
+                                                    FirebaseFirestore.instance.collection("users/").doc(uid).delete();
+                                                    var user = auth.currentUser;
+                                                    user?.delete();
+                                                    logout(context, false);
+                                                  },
+                                                  borderColor:
+                                                      Color(0xff0EB100),
+                                                  backColor: Color.fromARGB(
+                                                      40, 15, 177, 0),
+                                                  text: "SI",
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        },
-                                      );
-                                    }
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) => ChangePasswordPage(
-                                    //             id: uid,
-                                    //           )),
-                                    // );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Cambia Password",
-                                      style: TextStyle(fontSize: 24),
-                                    ),
-                                  ))
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }));
+                            },
+                            child: Padding(
+                                padding: EdgeInsets.all(7.5),
+                                child: Text(
+                                  "Elimina account",
+                                  style: TextStyle(fontSize: 24),
+                                )),
+                          ),
                         ],
                       ),
                       Row(
@@ -246,11 +327,15 @@ class Label extends StatelessWidget {
       children: [
         Text(
           type,
-          style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         Text(
           text,
-          style: TextStyle(fontSize: 22.5, color: Colors.white, overflow: TextOverflow.ellipsis),
+          style: TextStyle(
+              fontSize: 22.5,
+              color: Colors.white,
+              overflow: TextOverflow.ellipsis),
         )
       ],
     );
@@ -266,7 +351,8 @@ class JreadyLabel extends StatelessWidget {
       children: [
         Text(
           "App sviluppata da:",
-          style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         SizedBox(
             width: MediaQuery.of(context).size.width * .8,

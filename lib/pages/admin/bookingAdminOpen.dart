@@ -10,6 +10,8 @@ import 'package:shirne_dialog/shirne_dialog.dart';
 
 import 'notificationPage.dart';
 
+
+
 class AdminBookingOpen extends StatelessWidget {
   AdminBookingOpen({
     super.key,
@@ -154,6 +156,8 @@ class AdminBookingOpen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               DecisionButton(
+                                widthB: 150,
+                                heightB: 50,
                                   function: () async {
                                     await FirebaseFirestore.instance
                                         .collection("booking/")
@@ -172,6 +176,8 @@ class AdminBookingOpen extends StatelessWidget {
                                   backColor: Color.fromARGB(40, 255, 0, 0),
                                   text: "NO"),
                               DecisionButton(
+                                widthB: 150,
+                                heightB: 50,
                                   function: () async {
                                     await FirebaseFirestore.instance
                                         .collection("booking/")
@@ -188,7 +194,8 @@ class AdminBookingOpen extends StatelessWidget {
                                   },
                                   borderColor: Color(0xff0EB100),
                                   backColor: Color.fromARGB(40, 15, 177, 0),
-                                  text: "SI"),
+                                  text: "SI",
+                                ),
                             ],
                           ),
                         ),
@@ -264,12 +271,17 @@ class DecisionButton extends StatefulWidget {
       required this.borderColor,
       required this.backColor,
       required this.text,
-      required this.function});
+      required this.function,
+      required this.widthB,
+      required this.heightB,
+      });
 
   Color borderColor;
   Color backColor;
   String text;
   Function() function;
+  double widthB;
+  double heightB;
 
   @override
   State<DecisionButton> createState() => _DecisionButtonState();
@@ -289,8 +301,8 @@ class _DecisionButtonState extends State<DecisionButton> {
           color: widget.backColor,
         ),
         alignment: Alignment.center,
-        width: 150,
-        height: 50,
+        width: widget.widthB,
+        height: widget.heightB,
         child: Text(
           widget.text,
           style: TextStyle(
