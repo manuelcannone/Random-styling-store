@@ -4,7 +4,7 @@ import 'package:randomstylingstore/colors.dart';
 import 'package:randomstylingstore/main.dart';
 import 'package:randomstylingstore/pages/Appbar_Footer.dart';
 import 'package:randomstylingstore/pages/admin/notificationPage.dart';
-import 'package:randomstylingstore/pages/admin/usersAdmin.dart';
+import 'package:randomstylingstore/pages/admin/userPageAdmin.dart';
 import 'package:randomstylingstore/pages/userPage.dart';
 import '../../commonWidgets.dart';
 

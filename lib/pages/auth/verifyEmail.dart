@@ -152,7 +152,7 @@ class LogoutSection extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              appbarFooterComponents.logout(context);
+              appbarFooterComponents.logout(context, true);
             },
             child: Text("Logout")),
         SizedBox(
