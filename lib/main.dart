@@ -15,6 +15,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:async';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:randomstylingstore/pages/noAccountPage.dart';
 import 'firebase_options.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_mailer/flutter_mailer.dart';
@@ -60,9 +61,7 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme().theme,
         debugShowCheckedModeBanner: false,
         home: auth.currentUser == null
-            ? RegisterPage(
-                firstPage: true,
-              )
+            ? NoAccountPage()
             : FutureBuilder(
                 future: FirebaseFirestore.instance.collection("users").doc(auth.currentUser?.uid).get(),
                 builder: ((context, AsyncSnapshot snapshot) {
