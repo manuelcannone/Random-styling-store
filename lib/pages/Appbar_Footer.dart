@@ -16,6 +16,7 @@ import 'package:randomstylingstore/pages/auth/login.dart';
 import 'package:randomstylingstore/pages/auth/register.dart';
 import 'package:randomstylingstore/pages/claimReward.dart';
 import 'package:randomstylingstore/pages/home.dart';
+import 'package:randomstylingstore/pages/noAccountPage.dart';
 import 'package:randomstylingstore/pages/notifications.dart';
 import 'package:randomstylingstore/pages/points.dart';
 import 'package:randomstylingstore/pages/selectServices&Booking.dart';
@@ -639,7 +640,7 @@ class AppbarMenu extends StatelessWidget {
                                                         color: CColors.gold))),
                                             TextButton(
                                                 onPressed: () async {
-                                                  logout(context, true);
+                                                  logout(context);
                                                 },
                                                 child: Text("Sì",
                                                     style: TextStyle(
@@ -703,7 +704,7 @@ class AppbarMenu extends StatelessWidget {
                                                         color: CColors.gold))),
                                             TextButton(
                                                 onPressed: () async {
-                                                  logout(context, true);
+                                                  logout(context);
                                                 },
                                                 child: Text("Sì",
                                                     style: TextStyle(
@@ -776,17 +777,12 @@ class SubTitleText extends StatelessWidget {
   }
 }
 
-logout(context, bool log) {
+logout(context) {
   auth.signOut().then((value) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: ((context) => log ? LoginPage(
-                  firstPage: true,
-                ) : 
-                RegisterPage(
-                  firstPage: true,
-                )
+            builder: ((context) => NoAccountPage()
                 )
                 
                 ));

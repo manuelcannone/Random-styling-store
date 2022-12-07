@@ -275,7 +275,7 @@ class UserPage extends StatelessWidget {
                                                     FirebaseFirestore.instance.collection("users/").doc(uid).delete();
                                                     var user = auth.currentUser;
                                                     user?.delete();
-                                                    logout(context, false);
+                                                    logout(context);
                                                   },
                                                   borderColor:
                                                       Color(0xff0EB100),

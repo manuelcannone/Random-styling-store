@@ -7,8 +7,11 @@ import 'package:iconsax/iconsax.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
-//accept and refuse booking
+//coordinates to use in NoAccountPage
+double globalLat = 38.115658953683365;
+double globalLng = 13.361779109339185;
 
+//accept and refuse booking
 void barberSnapBar(context, String text, bool error) {
   //error == true  IconType.error
   //error == false  IconType.success
