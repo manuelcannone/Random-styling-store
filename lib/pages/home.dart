@@ -20,7 +20,7 @@ List<String> images = [
   'https://i.imgur.com/CFgZ5jC.jpeg',
   'https://i.imgur.com/DCylod2.jpeg',
   'https://i.imgur.com/7IQc4g5.jpeg',
-  'https://i.imgur.com/CPTD6JZ.jpeg',
+  'https://i.imgur.com/MYDfdxB.jpeg',
 ];
 
 List<Widget> cards = List.generate(

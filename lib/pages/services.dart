@@ -53,7 +53,9 @@ class _ServicesState extends State<Services> {
                   List nameAndPrice = [];
 
                   for (var element in snapshot.data.docs) {
-                    nameAndPrice.add([element["name"], element["price"]]);
+                    print("WWWWWWWWWWWWWWWW");
+                   
+                    nameAndPrice.add([element["name"], element["price"],element["tipology"]]);
                   }
 
                   return AnimationList(
@@ -63,6 +65,7 @@ class _ServicesState extends State<Services> {
                       return CService(
                         name: item[0],
                         price: item[1],
+                        timeModality : item[2],
                       );
                     }).toList(),
                     duration: 2500,
@@ -79,10 +82,11 @@ class _ServicesState extends State<Services> {
 }
 
 class CService extends StatelessWidget {
-  CService({super.key, required this.name, required this.price});
+  CService({super.key, required this.name, required this.price, this.timeModality = ""});
 
   String name;
   dynamic price;
+  String timeModality;
 
   @override
   Widget build(BuildContext context) {
@@ -96,6 +100,8 @@ class CService extends StatelessWidget {
                         sex: selectServiceSex,
                         services: name,
                         price: price,
+                        timeModality: timeModality
+,
                       ),
                       isUserAdmin: isUserAdminGlobal,
                       automaticallyImplyLeading: true,
