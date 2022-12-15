@@ -7,6 +7,7 @@ import 'package:randomstylingstore/pages/Appbar_Footer.dart';
 import 'package:randomstylingstore/pages/admin/usersAdmin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import "package:randomstylingstore/toChange.dart" as globalString;
 
 import '../../commonWidgets.dart';
 
@@ -30,9 +31,8 @@ class NotificationPage extends StatelessWidget {
   static void Emailsend(String email, String text, List<String> emails) async {
     // is a List
 
-    String username = 'jreadybarberapp@gmail.com';
-    String password = "ofrxkrazjczdaowk";
-    final smtpServer = gmail(username, password);
+  
+    final smtpServer = gmail(globalString.emailBarber, globalString.passwordBarber);
 
       late final message;
 
@@ -41,23 +41,23 @@ class NotificationPage extends StatelessWidget {
 
        message = Message()
 
-       ..from = Address(username, 'BarberApp')
+       ..from = Address(globalString.emailBarber, globalString.adminName)
       
  ..ccRecipients.addAll(emails)
-      ..bccRecipients.add(Address(username))
-      ..subject = 'Ciao dalla BarberApp!'
-      ..text = "Il tuo Barbiere ha qualcosa da dirti!"
+      ..bccRecipients.add(Address(globalString.emailBarber))
+      ..subject = 'Messaggio da ' + globalString.adminName
+      ..text = "Abbiamo  qualcosa da dirti!"
       ..html = text;
 
 
       }else{
 
       message = Message()
-       ..from = Address(username, 'BarberApp')
+       ..from = Address(globalString.emailBarber, globalString.adminName)
       ..recipients.add(email)
-      ..bccRecipients.add(Address(username))
-      ..subject = 'Ciao dalla BarberApp!'
-      ..text = "Il tuo Barbiere ha qualcosa da dirti!"
+      ..bccRecipients.add(Address(globalString.emailBarber))
+      ..subject = 'Ciao dalla ' +  globalString.adminName
+      ..text = "Abbiamo  qualcosa da dirti!"
       ..html = text;
       }
       
