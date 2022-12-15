@@ -64,7 +64,7 @@ class NoAccountPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset("media/barberlogo.png"),
-                    Address(addressText: "Via del Tutto Eccezionale n.8"),
+                    Address(addressText: "Via Carlo Minciotti n.15"),
                     Services(),
                     SizedBox()
                   ],

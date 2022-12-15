@@ -10,8 +10,6 @@ import 'package:shirne_dialog/shirne_dialog.dart';
 
 import 'notificationPage.dart';
 
-
-
 class AdminBookingOpen extends StatelessWidget {
   AdminBookingOpen({
     super.key,
@@ -199,6 +197,32 @@ class AdminBookingOpen extends StatelessWidget {
                             ],
                           ),
                         ),
+
+                          Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: DecisionButton(
+                                  widthB: MediaQuery.of(context).size.width * 0.9,
+                                  heightB: 50,
+                                    function: () async {
+                                      await FirebaseFirestore.instance
+                                          .collection("booking/")
+                                          .doc(idBooking)
+                                          .delete();
+
+                                      NotificationPage.Emailsend(
+                                          snapshotBooking.data["email"],
+                                          "la tua prenotazione è cancellata",
+                                          []);
+                                      Navigator.pop(context);
+
+                                      barberSnapBar(context,
+                                          "Prenotazione cancellata", true);
+                                    },
+                                    borderColor: Color(0xffC50707),
+                                    backColor: Color.fromARGB(40, 255, 0, 0),
+                                    text: "Elimina Prenotazione"),
+                          ),
+
                       ],
                     );
                   }

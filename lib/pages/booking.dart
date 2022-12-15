@@ -22,6 +22,8 @@ String type = "";
 dynamic typePrice = 0.0;
 String hoursSelect = "";
 String selectSex = "";
+String timeModality = "";
+
 TextEditingController noteController = TextEditingController();
 void resetSelectedValue() {
   operatorsValue = "";
@@ -33,14 +35,16 @@ void resetSelectedValue() {
   hoursSelect = "";
   selectSex = "";
   noteController.text = "";
+  timeModality = "";
 }
 
 class Booking extends StatefulWidget {
-  Booking({super.key, required this.services, required this.price, required this.sex});
+  Booking({super.key, required this.services, required this.price, required this.sex, this.timeModality = "" });
 
   String services;
   dynamic price;
   String sex;
+  String timeModality;
 
   @override
   State<Booking> createState() => _BookingState();
@@ -75,6 +79,9 @@ class _BookingState extends State<Booking> with TickerProviderStateMixin {
     type = widget.services;
     typePrice = widget.price;
     selectSex = widget.sex;
+    timeModality = widget.timeModality;
+    print("==============");
+    print(timeModality);
     return WillPopScope(
       onWillPop: () {
         resetSelectedValue();
@@ -371,7 +378,7 @@ class _BookingItemsState extends State<BookingItems> {
                             );
                           } else {
                             if (snapshot.hasData) {
-                              if (snapshot.data!.docs[0]["dates"].length == -0) {
+                              if (snapshot.data!.docs[0]["dates" + timeModality].length == -0) {
                                 throw "Non ci sono date";
                               }
                               ;
@@ -401,7 +408,8 @@ class _BookingItemsState extends State<BookingItems> {
                                             if (snapshot.data!.docs.length != 0) {
                                               for (var dayDate in snapshot.data!.docs) {
                                                 
-                                                for (var hours in dayDate["dates"]) {
+                                                for (var hours in dayDate["dates" + timeModality]) {
+                                                  print("dates" + timeModality);
                                                   bool dataIsNotavaible = false;
                                                   for (var isSelectedHours in snapshot2.data!.docs) {
                                                    

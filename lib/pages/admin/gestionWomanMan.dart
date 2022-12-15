@@ -222,13 +222,18 @@ class AddService extends StatefulWidget {
 
 class _AddServiceState extends State<AddService> {
   Future<void> _displayTextInputDialog(BuildContext context) async {
+
     TextEditingController _textFieldControllerService = TextEditingController();
     TextEditingController _textFieldControllerPrice = TextEditingController();
+    String? _dropDownValue = null;
+
     return showDialog(
       context: context,
       barrierDismissible: true, 
       builder: (context
       ) {
+          
+
         return AlertDialog(
             
                 
@@ -256,6 +261,36 @@ class _AddServiceState extends State<AddService> {
                           hintStyle:
                               TextStyle(fontSize: 16.0, color: Colors.grey)),
                     ),
+
+                  DropdownButton<String>(
+                    hint: Text("Tempistica") ,
+
+                  items: <DropdownMenuItem<String>>[
+                    DropdownMenuItem(child: 
+                      Text("Normale"),
+                      value: "",
+                    ),
+
+                       DropdownMenuItem(child: 
+                      Text("Veloce"),
+                      value: "1",
+                    ),
+                          DropdownMenuItem(child: 
+                      Text("lento"),
+                      value: "2",
+                    ),
+                  ],
+                  onChanged: (val){
+                    setState(() {
+                       _dropDownValue = val!;
+
+                    });
+                    
+                  },
+
+                ),
+
+
                   SizedBox(
                     height: 20,
                   ),
@@ -286,7 +321,8 @@ ElevatedButton(
                                 {
                                   'name': _textFieldControllerService.text,
                                   'price': _textFieldControllerPrice.text,
-                                  'type': widget.type
+                                  'type': widget.type,
+                                  "typology" : _dropDownValue,
                                 },
                               );
                               print(_textFieldControllerService.text);

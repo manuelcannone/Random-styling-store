@@ -14,9 +14,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:expandable/expandable.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-/*
+import '../../main.dart';
 
-     final operator = {
+/*
+    
+   final operator = {
+
       "name" : "Gianmarco"
     };
 
@@ -24,34 +27,39 @@ import 'package:firebase_core/firebase_core.dart';
     
     addDatesToOperators.add({
       "dates" : [
+         
+      ],
+      "dates1" : [
+       
+      ],
+       "dates2" : [
       
       ],
+
       "day": 1,
       "week" : "lunedi",
       "operators": operator["name"],
     });
 
         addDatesToOperators.add({
-      "dates" : [
-          "9:00",
+         "dates" : [
+        "9:00",
         "9:30",
         "10:00",
         "10:30",
         "11:00",
         "11:30",
+        "14:00",
+        "16:30"   
+      ],
+      "dates1" : [
         "12:00",
-        "12:30",
         "13:00",
-        "14:30",
         "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
+        "17:00"
+      ],
+       "dates2" : [
+      
       ],
       "day": 2,
       "week" : "Martedi",
@@ -59,26 +67,24 @@ import 'package:firebase_core/firebase_core.dart';
     });
       
         addDatesToOperators.add({
-      "dates" : [
-         "9:00",
+  "dates" : [
+        "9:00",
         "9:30",
         "10:00",
         "10:30",
         "11:00",
         "11:30",
+        "14:00",
+        "16:30"   
+      ],
+      "dates1" : [
         "12:00",
-        "12:30",
         "13:00",
-        "14:30",
         "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
+        "17:00"
+      ],
+       "dates2" : [
+      
       ],
       "day": 3,
       "week" : "Mercoledi",
@@ -92,45 +98,41 @@ import 'package:firebase_core/firebase_core.dart';
         "10:30",
         "11:00",
         "11:30",
+        "14:00",
+        "16:30"   
+      ],
+      "dates1" : [
         "12:00",
-        "12:30",
         "13:00",
-        "14:30",
         "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
+        "17:00"
+      ],
+       "dates2" : [
+      
       ],
       "day": 4,
       "week" : "Giovedi",
       "operators": operator["name"],
     });
         addDatesToOperators.add({
-      "dates" : [
+     "dates" : [
         "9:00",
         "9:30",
         "10:00",
         "10:30",
         "11:00",
         "11:30",
+        "14:00",
+        "16:30"   
+      ],
+      "dates1" : [
         "12:00",
-        "12:30",
         "13:00",
-        "14:30",
         "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
+        "17:00"
+      ],
+       "dates2" : [
+      
       ],
       "day": 5,
       "week" : "Venerdi",
@@ -139,25 +141,23 @@ import 'package:firebase_core/firebase_core.dart';
 
         addDatesToOperators.add({
       "dates" : [
-         "9:00",
+        "9:00",
         "9:30",
         "10:00",
         "10:30",
         "11:00",
         "11:30",
+        "14:00",
+        "16:30"   
+      ],
+      "dates1" : [
         "12:00",
-        "12:30",
         "13:00",
-        "14:30",
         "15:00",
-        "15:30",
-        "16:00",
-        "16:30",
-        "17:00",
-        "17:30",
-        "18:00",
-        "18:30",
-        "19:00",
+        "17:00"
+      ],
+       "dates2" : [
+      
       ],
       "day": 6,
       "week" : "Sabato",
@@ -166,16 +166,23 @@ import 'package:firebase_core/firebase_core.dart';
        
        
         addDatesToOperators.add({
-      "dates" : [
-       
+     "dates" : [
+     
+      ],
+      "dates1" : [
+      
+      ],
+       "dates2" : [
+      
       ],
       "day": 7,
       "week" : "Domenica",
       "operators": operator["name"],
     });
-
+ 
 
 */
+ String timeModality = "";
 
 String operatorsValue = "";
 
@@ -190,17 +197,100 @@ class GestionService extends StatefulWidget {
 }
 
 class _GestionServiceState extends State<GestionService> {
+  
+
+  @override
+  Widget build(BuildContext context) {
+ 
+    return 
+    Container(
+      child: Center( child: 
+      Column(children: [
+        GestureDetector(
+          onTap: (){
+            timeModality = "";
+             Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  AppbarFooter(
+                                              body: OpertorSelected(),
+                                              isUserAdmin: isUserAdminGlobal,
+                                              automaticallyImplyLeading: true,
+                                            )),
+  );
+          },
+          child: OperatorsAdminView(
+                              myValue: "Normale",
+                              isSelected: false,
+                            ),
+        ),
+
+         GestureDetector(
+          onTap: (){
+            timeModality = "1";
+             Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  AppbarFooter(
+                                              body: OpertorSelected(),
+                                              isUserAdmin: isUserAdminGlobal,
+                                              automaticallyImplyLeading: true,
+                                            )),
+  );
+          },
+          child: OperatorsAdminView(
+                              myValue: "Medio",
+                              isSelected: false,
+                            ),
+        ),
+
+
+     GestureDetector(
+          onTap: (){
+            timeModality = "2";
+             Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  AppbarFooter(
+                                              body: OpertorSelected(),
+                                              isUserAdmin: isUserAdminGlobal,
+                                              automaticallyImplyLeading: true,
+                                            )),
+  );
+          },
+          child: OperatorsAdminView(
+                              myValue: "Lento",
+                              isSelected: false,
+                            ),
+        ),
+
+
+
+      ],)
+
+      ),
+    );
+    
+    
+  
+  }
+}
+
+class OpertorSelected extends StatefulWidget {
+   OpertorSelected({super.key, });
+
+
+  @override
+  State<OpertorSelected> createState() => _OpertorSelectedState();
+}
+
+class _OpertorSelectedState extends State<OpertorSelected> {
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-   
   }
-
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return   Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         SizedBox(
@@ -208,6 +298,7 @@ class _GestionServiceState extends State<GestionService> {
               stream: FirebaseFirestore.instance.collection("operators").snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
+                  //caricamento
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.width * 0.2,
@@ -259,7 +350,7 @@ class _GestionServiceState extends State<GestionService> {
                       List<Widget> weeks = [];
 
                       for (var week in snapshot.data!.docs) {
-                        weeks.add(CardExpandable(day: week["week"], bookingTime: week["dates"], id: week.id));
+                        weeks.add(CardExpandable(day: week["week"], bookingTime: week["dates" + timeModality], id: week.id));
                       }
 
                       return ExpandableTheme(
@@ -280,8 +371,11 @@ class _GestionServiceState extends State<GestionService> {
         ),
       ],
     );
+
+
   }
 }
+
 
 class CardExpandable extends StatelessWidget {
   CardExpandable({super.key, required this.day, required this.bookingTime, required this.id});
@@ -349,7 +443,7 @@ class CardExpandable extends StatelessWidget {
                                   print(bookingTime);
                                   FirebaseFirestore.instance.collection("dates/").doc(id).update(
                                     {
-                                      'dates': FieldValue.arrayRemove([hours.toString()]),
+                                      'dates' + timeModality: FieldValue.arrayRemove([hours.toString()]),
                                     },
                                   );
                                 },
@@ -421,7 +515,7 @@ class _AddTimeState extends State<AddTime> {
           print("search");
           FirebaseFirestore.instance.collection("dates/").doc(widget.id).update(
             {
-              'dates': FieldValue.arrayUnion([result.format(context)])
+              'dates' + timeModality : FieldValue.arrayUnion([result.format(context)])
             },
           );
         });
