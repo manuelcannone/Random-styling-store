@@ -8,8 +8,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shirne_dialog/shirne_dialog.dart';
 
 //coordinates to use in NoAccountPage
-double globalLat = 38.115658953683365;
-double globalLng = 13.361779109339185;
+double globalLat = 42.42177519500762;
+double globalLng = 12.097359877353567;
 
 //accept and refuse booking
 void barberSnapBar(context, String text, bool error) {
